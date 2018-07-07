@@ -19,6 +19,7 @@
   "homepage": "https://github.com/maniol/ES6#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-latest": "^6.24.1"
   }
 }
