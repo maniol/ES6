@@ -30,6 +30,13 @@ var getAverage = function getAverage() {
 console.log('Zadanie trzecie');
 console.log(getAverage(4));
 
+//Zadanie czwarte
+
+var grades = [1, 5, 5, 5, 4, 3, 3, 2, 1];
+
+console.log('Zadanie czwarte');
+console.log(getAverage(grades));
+
 //Zadanie piate
 
 var data = [1, 4, 'Iwona', false, 'Nowak'];
