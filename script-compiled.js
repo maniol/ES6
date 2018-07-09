@@ -1,39 +1,90 @@
-'use strict';
+class Stopwatch {
+	constructor(display) {
+		this.running = false;
+		this.display = display;
+		this.recordList = [];
+		this.reset();
+		this.print(this.times);
+	}
+	reset() {
+		this.times = {
+			minutes: 0,
+			seconds: 0,
+			miliseconds: 0
+		};
+	}
+	print() {
+		this.display.innerText = this.format(this.times);
+	}
+	format(times) {
+		return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
+	}
+	start() {
+		if (!this.running) {
+			this.running = true;
+			this.watch = setInterval(() => this.step(), 10);
+		}
+	}
+	step() {
+		if (!this.running) return;
+		this.calculate();
+		this.print();
+	}
+	calculate() {
+		this.times.miliseconds += 1;
+		if (this.times.miliseconds >= 100) {
+			this.times.seconds += 1;
+			this.times.miliseconds = 0;
+		}
+		if (this.times.seconds >= 60) {
+			this.times.minutes += 1;
+			this.times.seconds = 0;
+		}
+	}
+	stop() {
+		this.running = false;
+		clearInterval(this.watch);
+	}
+	resetTimes() {
+		this.stop();
+		this.recordTime();
+		this.printRecordList();
+		this.reset();
+		this.print();
+	}
+	recordTime() {
+		this.recordList.push(this.times);
+	}
+	resetRecordList() {
+		this.recordList = [];
+		this.printRecordList();
+	}
+	printRecordList() {
+		let results = document.getElementById('results');
+		let resultsListHTML = '';
+		for (let i = 0; i < this.recordList.length; i++) {
+			let j = i + 1;
+			resultsListHTML += `<li>${j}. ${this.format(this.recordList[i])}</li>`;
+		}
+		results.innerHTML = resultsListHTML;
+	}
+}
 
-// Zadanie pierwsze
-var hello = 'Hello';
-var world = 'World';
-console.log('Zadanie pierwsze');
-console.log(hello + ' ' + world);
+const stopwatch = new Stopwatch(document.querySelector('.stopwatch'));
 
-//Zadanie drugie
-var multiply = function multiply(x) {
-  var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  return x * y;
-};
-console.log('Zadanie drugie');
-console.log(multiply(2));
+let startButton = document.getElementById('start');
+startButton.addEventListener('click', () => stopwatch.start());
+let stopButton = document.getElementById('stop');
+stopButton.addEventListener('click', () => stopwatch.stop());
+let resetButton = document.getElementById('reset');
+resetButton.addEventListener('click', () => stopwatch.resetTimes());
+let resetRecordListButton = document.getElementById('reset-record-list');
+resetRecordListButton.addEventListener('click', () => stopwatch.resetRecordList());
 
-//Zadane trzecie
-
-var getAverage = function getAverage() {
-  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  return args.reduce(function (total, arg) {
-    return total + arg;
-  }) / args.length;
-};
-// jak zrobic to z forEach
-//const getAverage = (...args) => args.forEach((arg) => var total += arg) / args.length;
-console.log('Zadanie trzecie');
-console.log(getAverage(4));
-
-//Zadanie piate
-
-var data = [1, 4, 'Iwona', false, 'Nowak'];
-var firstName = data[2],
-    lastName = data[4];
-
-console.log(firstName, lastName);
+function pad0(value) {
+	let result = value.toString();
+	if (result.length < 2) {
+		result = '0' + result;
+	}
+	return result;
+}

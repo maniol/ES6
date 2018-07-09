@@ -2,11 +2,18 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>ES6</title>
+		<title>Timer!</title>
+		<link rel="stylesheet" type="text/css" href="styles.css">
 	</head>
 	<body>
-		<script type="text/javascript" src="<katalog-do-babel-polyfill>/dist/polyfill.js"></script>
-		<script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
-		<script type="text/babel" src="script.js"></script>
+		<nav class="controls">
+			<a href="#" class="button" id="start">Start</a>
+			<a href="#" class="button" id="stop">Stop</a>
+			<a href="#" class="button" id="reset">Reset</a>
+		</nav>
+		<div class="stopwatch"></div>
+		<ul id="results"></ul>
+		<a href="#" class="button" id="reset-record-list">Reset list</a>
+		<script type="text/javascript" src="script-compiled.js"></script>
 	</body>
 </html>
