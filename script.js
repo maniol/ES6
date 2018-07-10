@@ -1,56 +1,68 @@
-Stopwatch = class Stopwatch extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { running: false };
-		this.reset();
-	}
-	static defaultProps = {
-		display: display
-	}
-	static propTypes = {
-		display: React.PropTypes.object.isRequired
-	}
-	reset = () => {
-		this.times = {
-			minutes: 0,
-			seconds: 0,
-			miliseconds:0
+ReactDOM.render(
+	<App />,
+	document.getElementById('root')
+);
+
+class App extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			searchText: '',
+			users: []
 		};
 	}
-	format = (times) => {
-		return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
+
+	onChangeHandle(event) {
+		this.setState({searchText: event.target.value});
 	}
 
-	step = () => {
-		if (this.state != running) return;
-		this.calculate();
-		this.print();
+	onSubmit(event) {
+		event.preventDefault();
+		const {searchText} = this.state;
+		const url = `https://api.github.com/search/users?q=${searchText}`;
+		fetch(url)
+			.then(response => response.json())
+			.then(responseJson => this.setState({users: responseJson.items}));
 	}
-	calculate = () => {
-		this.times.miliseconds += 1;
-		if (this.times.miliseconds >= 100) {
-				this.times.seconds += 1;
-				this.times.miliseconds = 0;
-		}
-		if (this.times.seconds >= 60) {
-				this.times.minutes += 1;
-				this.times.seconds = 0;
-		}
+
+	render() {
+		return (
+			<div>
+				<form onSubmit={event => this.onSubmit(event)}>
+					<label htmlFor="searchText">Search by user name</label>
+					<input
+						type="text"
+						id="searchText"
+						onChange={event => this.onChangeHandle(event)}
+						value={this.state.searchText}/>
+				</form>
+				<UsersList users={this.state.users}/>
+			</div>
+		);
 	}
-	render () {
-		return(
-			<div className={"stopwatch"}>this.format(this.time)</div>
-			)
-	}
-}
-function pad0(value) {
-	let result = value.toString();
-	if (result.length < 2) {
-		result = '0' + result;
-	}
-	return result;
 }
 
-const display = document.getElementById('stopwatch');
-const stopwatch = React.createElement(Stopwatch(display));
-ReactDOM.render(stopwatch, document.getElementById('stopwatch'));
+class UsersList extends React.Component {
+	get users() {
+		return this.props.users.map(user => <User key={user.id} user={user}/>);
+	}
+
+	render() {
+		return (
+			<div>
+				{this.users}
+			</div>
+		);
+	}
+}
+
+class User extends React.Component {
+	render() {
+		return (
+			<div>
+				<img src={this.props.user.avatar_url} style={{maxWidth: '100px'}}/>
+				<a href={this.props.user.html_url} target="_blank">{this.props.user.login}</a>
+			</div>
+		);
+	}
+}
