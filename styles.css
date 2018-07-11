@@ -1,0 +1,38 @@
+body {
+	background-color: #fafbf6;
+}
+
+#root {
+	font-family: 'Lato', sans-serif;
+}
+
+form {
+	padding: 30px;
+	font-size: 40px;
+	color: #00314c;
+	width:100%;
+	text-align: center;
+}
+
+input {
+	margin-left: 20px;
+	height: 40px;
+	font-size: 30px;
+}
+
+.record-list{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.listing a {
+	display: block;
+	text-align: center;
+}
+
+.listing {
+	margin: 5px;
+	border: 5px solid #dcff83;
+	padding: 5px;
+}
+
