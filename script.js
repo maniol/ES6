@@ -1,32 +1,46 @@
-Stopwatch = class Stopwatch extends React.Component {
+ReactDOM.render(
+	<App />,
+	document.getElementById('root')
+);
+
+class App extends React.Component {
+	constructor() {
+		super();
+	}
+	render() {
+		return (
+			<div>
+				<Controls />
+				<Stopwatch />
+				<Results />
+			</div>
+			)
+	}
+}
+
+class Stopwatch extends React.Component {
 	constructor(props) {
-		super(props);
+		super();
 		this.state = { running: false };
 		this.reset();
 	}
-	static defaultProps = {
-		display: display
-	}
-	static propTypes = {
-		display: React.PropTypes.object.isRequired
-	}
-	reset = () => {
+	reset() {
 		this.times = {
 			minutes: 0,
 			seconds: 0,
 			miliseconds:0
 		};
 	}
-	format = (times) => {
+	format(times) {
 		return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
 	}
 
-	step = () => {
+	step() {
 		if (this.state != running) return;
 		this.calculate();
 		this.print();
 	}
-	calculate = () => {
+	calculate () {
 		this.times.miliseconds += 1;
 		if (this.times.miliseconds >= 100) {
 				this.times.seconds += 1;
@@ -37,7 +51,7 @@ Stopwatch = class Stopwatch extends React.Component {
 				this.times.seconds = 0;
 		}
 	}
-	render () {
+	render() {
 		return(
 			<div className={"stopwatch"}>this.format(this.time)</div>
 			)
