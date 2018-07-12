@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -7,8 +7,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
 
 var App = function (_React$Component) {
 	_inherits(App, _React$Component);
@@ -20,14 +18,13 @@ var App = function (_React$Component) {
 	}
 
 	_createClass(App, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
+				"div",
 				null,
 				React.createElement(Controls, null),
-				React.createElement(Stopwatch, null),
-				React.createElement(Results, null)
+				React.createElement(Stopwatch, null)
 			);
 		}
 	}]);
@@ -49,7 +46,7 @@ var Stopwatch = function (_React$Component2) {
 	}
 
 	_createClass(Stopwatch, [{
-		key: 'reset',
+		key: "reset",
 		value: function reset() {
 			this.times = {
 				minutes: 0,
@@ -58,19 +55,19 @@ var Stopwatch = function (_React$Component2) {
 			};
 		}
 	}, {
-		key: 'format',
+		key: "format",
 		value: function format(times) {
-			return pad0(times.minutes) + ':' + pad0(times.seconds) + ':' + pad0(Math.floor(times.miliseconds));
+			return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
 		}
 	}, {
-		key: 'step',
+		key: "step",
 		value: function step() {
 			if (this.state != running) return;
 			this.calculate();
 			this.print();
 		}
 	}, {
-		key: 'calculate',
+		key: "calculate",
 		value: function calculate() {
 			this.times.miliseconds += 1;
 			if (this.times.miliseconds >= 100) {
@@ -83,12 +80,12 @@ var Stopwatch = function (_React$Component2) {
 			}
 		}
 	}, {
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
+				"div",
 				{ className: "stopwatch" },
-				'this.format(this.time)'
+				this.format(this.times)
 			);
 		}
 	}]);
@@ -104,6 +101,68 @@ function pad0(value) {
 	return result;
 }
 
-var display = document.getElementById('stopwatch');
-var stopwatch = React.createElement(Stopwatch(display));
-ReactDOM.render(stopwatch, document.getElementById('stopwatch'));
+var Controls = function (_React$Component3) {
+	_inherits(Controls, _React$Component3);
+
+	function Controls(props) {
+		_classCallCheck(this, Controls);
+
+		return _possibleConstructorReturn(this, (Controls.__proto__ || Object.getPrototypeOf(Controls)).call(this));
+	}
+
+	_createClass(Controls, [{
+		key: "start",
+		value: function start() {
+			var _this4 = this;
+
+			if (!this.running) {
+				this.running = true;
+				this.watch = setInterval(function () {
+					return _this4.step();
+				}, 10);
+			}
+		}
+	}, {
+		key: "stop",
+		value: function stop() {
+			this.running = false;
+			clearInterval(this.watch);
+		}
+	}, {
+		key: "resetTimes",
+		value: function resetTimes() {
+			this.stop();
+			this.recordTime();
+			this.printRecordList();
+			this.reset();
+			this.print();
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				"nav",
+				{ className: "controls" },
+				React.createElement(
+					"a",
+					{ href: "#", className: "button", id: "start", onClick: this.start() },
+					"Start"
+				),
+				React.createElement(
+					"a",
+					{ href: "#", className: "button", id: "stop", onClick: this.stop() },
+					"Stop"
+				),
+				React.createElement(
+					"a",
+					{ href: "#", className: "button", id: "reset", onClick: this.reset() },
+					"Reset"
+				)
+			);
+		}
+	}]);
+
+	return Controls;
+}(React.Component);
+
+ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
