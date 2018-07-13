@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8,45 +8,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App = function (_React$Component) {
-	_inherits(App, _React$Component);
-
-	function App() {
-		_classCallCheck(this, App);
-
-		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-	}
-
-	_createClass(App, [{
-		key: "render",
-		value: function render() {
-			return React.createElement(
-				"div",
-				null,
-				React.createElement(Controls, null),
-				React.createElement(Stopwatch, null)
-			);
-		}
-	}]);
-
-	return App;
-}(React.Component);
-
-var Stopwatch = function (_React$Component2) {
-	_inherits(Stopwatch, _React$Component2);
+var Stopwatch = function (_React$Component) {
+	_inherits(Stopwatch, _React$Component);
 
 	function Stopwatch(props) {
 		_classCallCheck(this, Stopwatch);
 
-		var _this2 = _possibleConstructorReturn(this, (Stopwatch.__proto__ || Object.getPrototypeOf(Stopwatch)).call(this));
+		var _this = _possibleConstructorReturn(this, (Stopwatch.__proto__ || Object.getPrototypeOf(Stopwatch)).call(this, props));
 
-		_this2.state = { running: false };
-		_this2.reset();
-		return _this2;
+		_this.state = { running: false };
+		_this.reset();
+		return _this;
 	}
 
 	_createClass(Stopwatch, [{
-		key: "reset",
+		key: 'reset',
 		value: function reset() {
 			this.times = {
 				minutes: 0,
@@ -55,19 +31,20 @@ var Stopwatch = function (_React$Component2) {
 			};
 		}
 	}, {
-		key: "format",
+		key: 'format',
 		value: function format(times) {
-			return pad0(times.minutes) + ":" + pad0(times.seconds) + ":" + pad0(Math.floor(times.miliseconds));
+			return pad0(times.minutes) + ':' + pad0(times.seconds) + ':' + pad0(Math.floor(times.miliseconds));
 		}
 	}, {
-		key: "step",
+		key: 'step',
 		value: function step() {
+			console.log('magda');
 			if (this.state != running) return;
 			this.calculate();
 			this.print();
 		}
 	}, {
-		key: "calculate",
+		key: 'calculate',
 		value: function calculate() {
 			this.times.miliseconds += 1;
 			if (this.times.miliseconds >= 100) {
@@ -80,12 +57,17 @@ var Stopwatch = function (_React$Component2) {
 			}
 		}
 	}, {
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
-				"div",
-				{ className: "stopwatch" },
-				this.format(this.times)
+				'div',
+				null,
+				React.createElement(Controls, { running: this.state.running }),
+				React.createElement(
+					'div',
+					{ className: "stopwatch" },
+					this.format(this.times)
+				)
 			);
 		}
 	}]);
@@ -101,35 +83,36 @@ function pad0(value) {
 	return result;
 }
 
-var Controls = function (_React$Component3) {
-	_inherits(Controls, _React$Component3);
+var Controls = function (_React$Component2) {
+	_inherits(Controls, _React$Component2);
 
 	function Controls(props) {
 		_classCallCheck(this, Controls);
 
-		return _possibleConstructorReturn(this, (Controls.__proto__ || Object.getPrototypeOf(Controls)).call(this));
+		return _possibleConstructorReturn(this, (Controls.__proto__ || Object.getPrototypeOf(Controls)).call(this, props));
 	}
 
 	_createClass(Controls, [{
-		key: "start",
+		key: 'start',
 		value: function start() {
-			var _this4 = this;
+			var _this3 = this;
 
-			if (!this.running) {
-				this.running = true;
+			console.log(this.props.running);
+			if (!this.props.running) {
+				this.props.running = true;
 				this.watch = setInterval(function () {
-					return _this4.step();
+					return _this3.step();
 				}, 10);
 			}
 		}
 	}, {
-		key: "stop",
+		key: 'stop',
 		value: function stop() {
-			this.running = false;
+			this.props.running = false;
 			clearInterval(this.watch);
 		}
 	}, {
-		key: "resetTimes",
+		key: 'resetTimes',
 		value: function resetTimes() {
 			this.stop();
 			this.recordTime();
@@ -138,31 +121,54 @@ var Controls = function (_React$Component3) {
 			this.print();
 		}
 	}, {
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
-				"nav",
-				{ className: "controls" },
+				'nav',
+				{ className: 'controls' },
 				React.createElement(
-					"a",
-					{ href: "#", className: "button", id: "start", onClick: this.start() },
-					"Start"
+					'a',
+					{ href: '#', className: 'button', id: 'start', onClick: this.start },
+					'Start'
 				),
 				React.createElement(
-					"a",
-					{ href: "#", className: "button", id: "stop", onClick: this.stop() },
-					"Stop"
+					'a',
+					{ href: '#', className: 'button', id: 'stop', onClick: this.stop },
+					'Stop'
 				),
 				React.createElement(
-					"a",
-					{ href: "#", className: "button", id: "reset", onClick: this.reset() },
-					"Reset"
+					'a',
+					{ href: '#', className: 'button', id: 'reset', onClick: this.reset },
+					'Reset'
 				)
 			);
 		}
 	}]);
 
 	return Controls;
+}(React.Component);
+
+var App = function (_React$Component3) {
+	_inherits(App, _React$Component3);
+
+	function App(props) {
+		_classCallCheck(this, App);
+
+		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	}
+
+	_createClass(App, [{
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(Stopwatch, null)
+			);
+		}
+	}]);
+
+	return App;
 }(React.Component);
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('root'));

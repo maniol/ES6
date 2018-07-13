@@ -1,20 +1,6 @@
-class App extends React.Component {
-	constructor() {
-		super();
-	}
-	render() {
-		return (
-			<div>
-				<Controls />
-				<Stopwatch />
-			</div>
-			)
-	}
-}
-
 class Stopwatch extends React.Component {
 	constructor(props) {
-		super();
+		super(props);
 		this.state = { running: false };
 		this.reset();
 	}
@@ -30,6 +16,7 @@ class Stopwatch extends React.Component {
 	}
 
 	step() {
+		console.log('magda')
 		if (this.state != running) return;
 		this.calculate();
 		this.print();
@@ -47,8 +34,11 @@ class Stopwatch extends React.Component {
 	}
 	render() {
 		return(
-			<div className={"stopwatch"}>{this.format(this.times)}</div>
-			)
+			<div>
+				<Controls running={this.state.running}/>
+				<div className={"stopwatch"}>{this.format(this.times)}</div>
+			</div>
+		)
 	}
 }
 function pad0(value) {
@@ -61,16 +51,17 @@ function pad0(value) {
 
 class Controls extends React.Component {
 	constructor(props) {
-		super();
+		super(props);
 	}
 	start() {
-		if (!this.running) {
-			this.running = true;
+		console.log(this.props.running)
+		if (!this.props.running) {
+			this.props.running = true;
 			this.watch = setInterval(() => this.step(), 10);
 		}
 	}
 	stop() {
-		this.running = false;
+		this.props.running = false;
 		clearInterval(this.watch);
 	}
 	resetTimes() {
@@ -83,10 +74,23 @@ class Controls extends React.Component {
 	render () {
 		return (
 			<nav className="controls">
-				<a href="#" className="button" id="start" onClick={this.start()}>Start</a>
-				<a href="#" className="button" id="stop" onClick={this.stop()}>Stop</a>
-				<a href="#" className="button" id="reset" onClick={this.reset()}>Reset</a>
+				<a href="#" className="button" id="start" onClick={this.start}>Start</a>
+				<a href="#" className="button" id="stop" onClick={this.stop}>Stop</a>
+				<a href="#" className="button" id="reset" onClick={this.reset}>Reset</a>
 			</nav>
+			)
+	}
+}
+
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return (
+			<div>
+				<Stopwatch />
+			</div>
 			)
 	}
 }
