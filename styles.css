@@ -16,9 +16,11 @@ body {
 a {
 	text-decoration: none;
 	color: #cccccc;
+	margin: 10px;
 }
 
 ul {
 	text-align: center;
 	list-style: none;
+	padding: 0;
 }
